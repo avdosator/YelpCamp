@@ -40,11 +40,17 @@ app.post("/campgrounds", async (req, res) => {
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground.id}`);
-})
+});
 
 app.get("/campgrounds/:id", async (req, res) => {
     const campground = await Campground.findById(req.params.id);
     res.render("campgrounds/show", {campground});
+});
+
+app.delete("/campgrounds/:id", async (req, res) => {
+    const {id} = req.params;
+    await Campground.findByIdAndDelete(id);
+    res.redirect("/campgrounds");
 });
 
 app.listen(3000, () => console.log("Listening on PORT 3000"));
