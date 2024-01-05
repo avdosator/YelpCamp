@@ -3,6 +3,7 @@ const methodOverride = require("method-override");
 const path = require("path");
 const mongoose = require("mongoose");
 const ExpressError = require("./utils/ExpressError");
+const catchAsync = require("./utils/catchAsync");
 const ejsMate = require("ejs-mate");
 const Campground = require("./models/campground");
 
