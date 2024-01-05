@@ -20,7 +20,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded( { extended: true}));
 app.use(methodOverride("_method"));
 
-app.get("/campgrounds", async (req, res) => {
+app.get("/campgrounds", async (req, res, next) => {
     const campgrounds = await Campground.find({});
     res.render("campgrounds/index", {campgrounds});
 });
@@ -35,30 +35,41 @@ app.get("/campgrounds/:id/edit", catchAsync(async(req, res, next) => {
 }));
 
 app.put("/campgrounds/:id", catchAsync(async (req, res, next) => {
-        const {id} = req.params;
-        await Campground.findByIdAndUpdate(id, {...req.body.campground}, {new: true});
-        res.redirect(`/campgrounds/${req.params.id}`);
+    const {id} = req.params;
+    await Campground.findByIdAndUpdate(id, {...req.body.campground}, {new: true});
+    res.redirect(`/campgrounds/${req.params.id}`);
 }));
 
 app.post("/campgrounds", catchAsync(async (req, res, next) => {
-        const campground = new Campground(req.body.campground);
-        await campground.save();
-        res.redirect(`/campgrounds/${campground.id}`);
+    if(!req.body.campground) {
+        throw new ExpressError("Invalid campground data", 400);
+    }
+    const campground = new Campground(req.body.campground);
+    await campground.save();
+    res.redirect(`/campgrounds/${campground.id}`);
 }));
 
-app.get("/campgrounds/:id", catchAsync(async (req, res) => {
+app.get("/campgrounds/:id", catchAsync(async (req, res, next) => {
     const campground = await Campground.findById(req.params.id);
     res.render("campgrounds/show", {campground});
 }));
 
-app.delete("/campgrounds/:id", catchAsync(async (req, res) => {
+app.delete("/campgrounds/:id", catchAsync(async (req, res, next) => {
     const {id} = req.params;
     await Campground.findByIdAndDelete(id);
     res.redirect("/campgrounds");
 }));
 
+app.all("*", (req, res, next) => {
+    next(new ExpressError("Page Not Found!", 404));
+})
+
 app.use((err, req, res, next) => {
-    res.send("Something went wrong!");
+    const {statusCode = 500} = err;
+    if(!err.message) {
+        err.message = "Something went wrong";
+    }
+    res.status(statusCode).render("error", {err});
 });
 
 app.listen(3000, () => console.log("Listening on PORT 3000"));
