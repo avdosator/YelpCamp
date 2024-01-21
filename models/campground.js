@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Review = require("./review");
-const Product = require("../../The Web Development Bootcamp - modules/Section 45 - Mongo Relationships With Express/models/product");
 
 const Schema = mongoose.Schema;
 
@@ -18,9 +17,9 @@ const campgroundSchema = new Schema({
     ]
 });
 
-campgroundSchema.post("findOneAndDelete", async (camp) => {
-    if(camp.reviews.length) {
-        const res = await Product.deleteMany({_id: { $in: camp.reviews }});
+campgroundSchema.post("findOneAndDelete", async function (camp) {
+    if(camp) {
+        const res = await Review.deleteMany({_id: { $in: camp.reviews }});
         console.log(res);
     }
 });
