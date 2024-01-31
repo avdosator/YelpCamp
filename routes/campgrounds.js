@@ -29,29 +29,42 @@ router.get("/new", (req, res) => {
 
 router.get("/:id/edit", catchAsync(async(req, res, next) => {
     const campground = await Campground.findById(req.params.id);
-    res.render("campgrounds/edit", {campground});
-}));
-
-router.put("/:id", validateCampground, catchAsync(async (req, res, next) => {
-    const {id} = req.params;
-    await Campground.findByIdAndUpdate(id, {...req.body.campground}, {new: true});
-    res.redirect(`/campgrounds/${req.params.id}`);
+    if(!campground) {
+        req.flash("error", "Cannot find that campground!");
+        res.redirect("/campgrounds");
+    } else {
+        res.render("campgrounds/edit", {campground});
+    }
 }));
 
 router.post("/", validateCampground, catchAsync(async (req, res, next) => { 
     const campground = new Campground(req.body.campground);
     await campground.save();
+    req.flash("success", "Successfully created campground!");
     res.redirect(`/campgrounds/${campground.id}`);
+}));
+
+router.put("/:id", validateCampground, catchAsync(async (req, res, next) => {
+    const {id} = req.params;
+    await Campground.findByIdAndUpdate(id, {...req.body.campground}, {new: true});
+    req.flash("success", "Successfully updated campground!");
+    res.redirect(`/campgrounds/${req.params.id}`);
 }));
 
 router.get("/:id", catchAsync(async (req, res, next) => {
     const campground = await Campground.findById(req.params.id).populate("reviews");
-    res.render("campgrounds/show", {campground});
+    if(!campground) {
+        req.flash("error", "Cannot find that campground!");
+        res.redirect("/campgrounds");
+    } else {
+        res.render("campgrounds/show", {campground});
+    }
 }));
 
 router.delete("/:id", catchAsync(async (req, res, next) => {
     const {id} = req.params;
     await Campground.findByIdAndDelete(id);
+    req.flash("success", "Successfully deleted campground!");
     res.redirect("/campgrounds");
 }));
 
