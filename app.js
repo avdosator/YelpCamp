@@ -4,8 +4,12 @@ const path = require("path");
 const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
 const session = require("express-session");
-const ExpressError = require("./utils/ExpressError");
 const flash = require("connect-flash");
+const passport = require("passport");
+const localStrategy = require("passport-local");
+const ExpressError = require("./utils/ExpressError");
+const User = require("./models/user");
+
 
 const campgroundRoutes = require("./routes/campgrounds");
 const reviewRoutes = require("./routes/reviews");
@@ -38,6 +42,14 @@ const sessionConfig = {
 
 app.use(session(sessionConfig));
 app.use(flash());
+
+app.use(passport.initialize()); // adds passport object to the req and allows next routes and middlewares to use passport
+// password.session sets up passport to use session for login purposes. When user is authenticated it serialize user to the session
+// on next requests it desiralize object from session into req.user
+app.use(passport.session()); 
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");
