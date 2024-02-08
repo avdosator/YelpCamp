@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const passport = require("passport");
 const User = require("../models/user");
 const catchAsync = require("../utils/catchAsync");
 
@@ -19,5 +20,15 @@ router.post("/register", catchAsync(async(req, res) => {
         res.redirect("/register");
     }
 }));
+
+router.get("/login", (req, res) => {
+    res.render("users/login");
+});
+
+// this middleware is automatically doing authentication with provided (local) strategy - username and password. That is something like hash and compare methods from bcrypt
+router.post("/login", passport.authenticate("local", {failureFlash: true, failureRedirect: "/login"} ), (req, res) => {
+    req.flash("success", "You are logged in!");
+    res.redirect("/campgrounds");
+});
 
 module.exports = router;
