@@ -55,6 +55,7 @@ passport.serializeUser(User.serializeUser()); // generates a function which is u
 passport.deserializeUser(User.deserializeUser()); // function which is used to deserialize user 
 
 app.use((req, res, next) => {
+    res.locals.currentUser = req.user; // if user is logged in this will be object, otherwise is undefined so we can use it in all templates (look at navbar)
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     next();
