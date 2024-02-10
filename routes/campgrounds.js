@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const mongoose = require("mongoose");
-const isLoggedIn = require("../middleware");
+const {isLoggedIn} = require("../middleware.js");
 
 const {campgroundSchema} = require("../schemas");
 

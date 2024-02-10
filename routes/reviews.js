@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router({mergeParams: true}); // now we can use params from different files (campground id)
 const mongoose = require("mongoose");
 const catchAsync = require("../utils/catchAsync");
-const isLoggedIn = require("../middleware");
+const { isLoggedIn } = require("../middleware");
 
 const {reviewSchema} = require("../schemas");
 
