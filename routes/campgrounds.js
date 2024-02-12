@@ -31,6 +31,7 @@ router.get("/new", isLoggedIn, (req, res) => {
 // we should also protect this route like this so somebody can't hit this route even if he finds way around form (which is also protected)
 router.post("/", isLoggedIn, validateCampground, catchAsync(async (req, res, next) => { 
     const campground = new Campground(req.body.campground);
+    campground.author = req.user._id;
     await campground.save();
     req.flash("success", "Successfully created campground!");
     res.redirect(`/campgrounds/${campground.id}`);
