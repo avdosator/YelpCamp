@@ -1,6 +1,5 @@
 <% layout("/layouts/boilerplate") %>
-    <h1>All Campgrounds:</h1>
-    <a href="/campgrounds/new">Add Campground</a>
+    <h1 class="text-center mb-5">All Campgrounds:</h1>
     
         <% for(campground of campgrounds) { %>
             <div class="card mb-2">
@@ -21,5 +20,4 @@
                 </div>
             </div>
         <% } %>
-        <li><a href="/campgrounds/<%= campground.id %>"><%= campground.title %></a></li>
 
