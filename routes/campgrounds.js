@@ -1,33 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
-const mongoose = require("mongoose");
-const { isLoggedIn } = require("../middleware.js");
+const { isLoggedIn, isAuthor, validateCampground } = require("../middleware.js");
 
-const { campgroundSchema } = require("../schemas");
-
-const ExpressError = require("../utils/ExpressError");
 const Campground = require("../models/campground");
-
-const validateCampground = (req, res, next) => {
-    const { error } = campgroundSchema.validate(req.body); // destructure error from result object
-    if (error) {
-        const message = error.details.map(el => el.message).join(","); // error.details is array of objects so we map 
-        throw new ExpressError(message, 400);                         // over them and make a string of them
-    } else {
-        next();
-    }
-}
-
-const isAuthor = async (req, res, next) => {
-    const { id } = req.params;
-    const campground = await Campground.findById(id);
-    if (!campground.author.equals(req.user._id)) {
-        req.flash("error", "You don't have permission to do that!");
-        return res.redirect(`/campgrounds/${id}`);
-    }
-    next();
-}
 
 router.get("/", async (req, res, next) => {
     const campgrounds = await Campground.find({});
