@@ -6,14 +6,14 @@ const { storeReturnTo } = require("../middleware");
 
 const users = require("../controllers/users");
 
-router.get("/register", users.renderRegisterForm);
+router.route("/register")
+    .get(users.renderRegisterForm)
+    .post(catchAsync(users.createUser));
 
-router.post("/register", catchAsync(users.createUser));
-
-router.get("/login", (users.renderLoginForm));
-
-// this middleware is automatically doing authentication with provided (local) strategy - username and password. That is something like hash and compare methods from bcrypt
-router.post("/login", storeReturnTo, passport.authenticate("local", {failureFlash: true, failureRedirect: "/login"} ), users.loginUser);
+router.route("/login")
+    .get(users.renderLoginForm)
+    // this middleware is automatically doing authentication with provided (local) strategy - username and password. That is something like hash and compare methods from bcrypt
+    .post(storeReturnTo, passport.authenticate("local", {failureFlash: true, failureRedirect: "/login"} ), users.loginUser);
 
 router.get("/logout", users.logoutUser);
 
