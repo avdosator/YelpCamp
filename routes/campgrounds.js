@@ -24,11 +24,7 @@ router.get("/", campgrounds.index);
 router.route("/")
     .get(campgrounds.index)
     // we should also protect this route like this so somebody can't hit this route even if he finds way around form (which is also protected)
-    //.post(isLoggedIn, validateCampground, catchAsync(campgrounds.createCampground));
-    .post(upload.array("image"), (req, res) => {
-        console.log(req.body, req.file);
-        res.send("multer is working");
-    })
+    .post(isLoggedIn, upload.array("image"), validateCampground, catchAsync(campgrounds.createCampground));
 
 router.get("/new", isLoggedIn, campgrounds.renderNewForm);
 

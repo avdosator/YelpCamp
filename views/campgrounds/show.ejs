@@ -5,7 +5,9 @@
     <div class="row mb-3">
         <div class="col-6">
             <div class="card mb-3">
-                <img src="/uploads/image-1708078357910.jpg" class="card-img-top" alt="...">
+                <% for(img of campground.images) { %>
+                    <img src="<%= img.path.substr(57) %>" class="card-img-top" alt="...">
+                <% } %>
                 <div class="card-body">
                     <h5 class="card-title"><%= campground.title %></h5>
                     <p class="card-text"><%= campground.description %></p>
