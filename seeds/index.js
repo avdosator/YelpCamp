@@ -22,7 +22,16 @@ const seedDatabase = async () => {
             title: `${sample(descriptors)} ${sample(places)}`,
             location: `${cities[rand1000].city}, ${cities[rand1000].state}`,
             description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. In tempore recusandae amet id ipsum suscipit iusto consequuntur nam, repellat veritatis pariatur eaque quam similique ab commodi nostrum ut autem repudiandae.",
-            image: "https://images.unsplash.com/photo-1563299796-17596ed6b017?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            images:  [
+                {
+                  path: 'C:\\Users\\Avdo\\Desktop\\workspace - VS Code\\YelpCamp\\public\\uploads\\image-1708096912972.jpg',
+                  filename: 'image-1708096912972.jpg',
+                },
+                {
+                  path: 'C:\\Users\\Avdo\\Desktop\\workspace - VS Code\\YelpCamp\\public\\uploads\\image-1708096913049.jpg',
+                  filename: 'image-1708096913049.jpg',
+                }
+              ],
             price
         });
         await camp.save();
