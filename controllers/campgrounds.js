@@ -48,6 +48,9 @@ const renderEditForm = async (req, res, next) => {
 const editCampground = async (req, res, next) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground }, { new: true }); // we should  just use update because we already found campground above
+    const images = req.files.map(f => ( {path: f.path, filename: f.filename} ));
+    await campground.images.push(...images);
+    campground.save();
     req.flash("success", "Successfully updated campground!");
     res.redirect(`/campgrounds/${campground._id}`);
 }
