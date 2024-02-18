@@ -1,4 +1,8 @@
 const Campground = require("../models/campground");
+const fs = require("fs");
+const path = require("path");
+
+const uploadsDir = path.join(__dirname, "..", "public", 'uploads');
 
 const index = async (req, res, next) => {
     const campgrounds = await Campground.find({});
@@ -52,9 +56,14 @@ const editCampground = async (req, res, next) => {
     await campground.images.push(...images);
     campground.save();
     if (req.body.deleteImages) {
+        for (const image of req.body.deleteImages) {
+            const imagePath = path.join(uploadsDir, image);
+            fs.unlink(imagePath, (err) => {
+                if (err) return next(err);
+            })
+        }
         // delete from images array images which filename is in req.body.deleteImages (checked images in edit form)
         await campground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } });
-        // now we should also delete that images in uploads folder
     }
     req.flash("success", "Successfully updated campground!");
     res.redirect(`/campgrounds/${campground._id}`);
