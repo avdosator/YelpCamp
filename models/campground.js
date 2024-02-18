@@ -3,6 +3,15 @@ const Review = require("./review");
 
 const Schema = mongoose.Schema;
 
+const imageSchema = new Schema({
+    path: String,
+    filename: String
+});
+
+imageSchema.virtual("src").get(function () {
+    return this.path.substring(57);
+})
+
 const campgroundSchema = new Schema({
     title: String,
     price: Number,
@@ -18,12 +27,7 @@ const campgroundSchema = new Schema({
             ref: "Review"
         }
     ],
-    images: [
-        {
-            path: String,
-            filename: String
-        }
-    ]
+    images: [imageSchema]
 });
 
 campgroundSchema.post("findOneAndDelete", async function (camp) {
