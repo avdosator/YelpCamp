@@ -37,6 +37,17 @@
                 <label class="form-label" for="image">Add more images</label>
                 <input class="form-control" type="file" name="image" id="image" multiple>
             </div>
+            <!-- next div is displaying all images. When we check checkboxes, image names (value) will be added to deleteImages array (name) -->
+            <div class="mb-3">
+                <% campground.images.forEach((img, i) => { %>
+                    <img src="<%= img.path.substr(57) %>" class="img-thumbnail" alt="">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="deleteImages[]" 
+                        value="<%= img.filename %>" id="image-<%= i %>">
+                        <label class="form-check-label" for="image-<%= i %>"> Delete </label>
+                      </div>
+                <% }) %>
+            </div>
                 <div class="mb-3">
                     <button class="btn btn-success">Save</button>
                     <a href="/campgrounds/<%= campground.id %>" class="btn btn-secondary">Go Back</a>
