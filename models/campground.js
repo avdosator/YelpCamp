@@ -10,7 +10,7 @@ const imageSchema = new Schema({
 
 imageSchema.virtual("src").get(function () {
     return this.path.substring(57);
-})
+});
 
 const campgroundSchema = new Schema({
     title: String,
