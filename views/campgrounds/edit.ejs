@@ -40,8 +40,8 @@
             <!-- next div is displaying all images. When we check checkboxes, image names (value) will be added to deleteImages array (name) -->
             <div class="mb-3">
                 <% campground.images.forEach((img, i) => { %>
-                    <img src="<%= img.src %>" class="img-thumbnail" alt="">
-                    <div class="form-check">
+                    <img src="<%= img.src %>" class="img-thumbnail" alt="" width="200" height="200">
+                    <div class="form-check-inline">
                         <input class="form-check-input" type="checkbox" name="deleteImages[]" 
                         value="<%= img.filename %>" id="image-<%= i %>">
                         <label class="form-check-label" for="image-<%= i %>"> Delete </label>
