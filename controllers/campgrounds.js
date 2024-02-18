@@ -47,11 +47,15 @@ const renderEditForm = async (req, res, next) => {
 
 const editCampground = async (req, res, next) => {
     const { id } = req.params;
-    console.log(req.body);
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground }, { new: true }); // we should  just use update because we already found campground above
     const images = req.files.map(f => ( {path: f.path, filename: f.filename} ));
     await campground.images.push(...images);
     campground.save();
+    if (req.body.deleteImages) {
+        // delete from images array images which filename is in req.body.deleteImages (checked images in edit form)
+        await campground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } });
+        // now we should also delete that images in uploads folder
+    }
     req.flash("success", "Successfully updated campground!");
     res.redirect(`/campgrounds/${campground._id}`);
 }
