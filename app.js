@@ -1,3 +1,9 @@
+// this means that if we are in development then configure dotenv to add variables from .env file to process.env
+// when we are in production there is another way to serve environment variables
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config()
+}
+
 const express = require("express");
 const methodOverride = require("method-override");
 const path = require("path");
