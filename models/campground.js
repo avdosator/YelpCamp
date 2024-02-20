@@ -4,6 +4,7 @@ const Review = require("./review");
 const Schema = mongoose.Schema;
 
 const imageSchema = new Schema({
+    _id: {_id: false}, // I think that we don't want every image to have id
     path: String,
     filename: String
 });
