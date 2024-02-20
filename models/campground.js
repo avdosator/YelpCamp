@@ -29,7 +29,7 @@ const campgroundSchema = new Schema({
             ref: "Review"
         }
     ],
-    geometry: {
+    geometry: { // this is standardized geoJSON field
         type: {
             type: String,
             enum: ["Point"], // like this we say that type must be string "Point"
