@@ -2,6 +2,10 @@
 <!-- Link css file like this because we just use it in this template but this is not best way -->
 <link rel="stylesheet" href="/styles/star-rating.css">
 
+<script>
+    const mapToken = "<%- process.env.MAPBOX_TOKEN %>";
+</script>
+
     <div class="row mb-3">
         <div class="col-6">
             <div id='map' style='width: 400px; height: 300px;'></div>
@@ -94,4 +98,4 @@
     <a href="/campgrounds" class="btn btn-secondary mb-3">All Campgrounds</a>
 
     <!-- this script needs to be placed after script and link for maps (it is in boilerplate head element) so we can use mapboxgl variable -->
-    <script src="/scripts/showPageMap.ejs"></script>
+    <script src="/scripts/showPageMap.js"></script>
