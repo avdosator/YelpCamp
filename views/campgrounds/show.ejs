@@ -4,6 +4,7 @@
 
     <div class="row mb-3">
         <div class="col-6">
+            <div id='map' style='width: 400px; height: 300px;'></div>
             <div id="campgroundCarousel" class="carousel slide">
                 <div class="carousel-inner">
                     <% campground.images.forEach((img, i) => { %>
@@ -94,7 +95,7 @@
 
     <!-- this script needs to be placed after script and link for maps (it is in boilerplate head element) so we can use mapboxgl variable -->
     <script>
-        mapboxgl.accessToken = "<% process.env.MAPBOX_TOKEN %>";
+        mapboxgl.accessToken = "<%- process.env.MAPBOX_TOKEN %>";
         const map = new mapboxgl.Map({
             container: 'map', // container ID
             style: 'mapbox://styles/mapbox/streets-v12', // style URL
