@@ -1,6 +1,9 @@
-const Campground = require("../models/campground");
 const fs = require("fs");
 const path = require("path");
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapboxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding( {accessToken: mapboxToken} );
+const Campground = require("../models/campground");
 
 const uploadsDir = path.join(__dirname, "..", "public", 'uploads');
 
