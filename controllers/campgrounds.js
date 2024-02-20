@@ -18,17 +18,18 @@ const renderNewForm = (req, res) => {
 
 const createCampground = async (req, res, next) => {
     const geoData = await geocoder.forwardGeocode({
-        query: "Orahov Brijeg, BiH",
+        query: req.body.campground.location,
         limit: 1
     }).send();
-    console.log(geoData.body.features[0].geometry);
-    /*const campground = new Campground(req.body.campground);
+    const campground = new Campground(req.body.campground);
+    campground.geometry = geoData.body.features[0].geometry;
     // loop over req.files (uploaded images) and for every image create an object and store it in campground.images
     campground.images = req.files.map(f => ( {path: f.path, filename: f.filename} ));
     campground.author = req.user._id;
     await campground.save();
+    console.log(campground);
     req.flash("success", "Successfully created campground!");
-    res.redirect(`/campgrounds/${campground.id}`);*/
+    res.redirect(`/campgrounds/${campground.id}`);
 }
 
 const showCampground = async (req, res, next) => {
