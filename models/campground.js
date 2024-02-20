@@ -17,6 +17,7 @@ const campgroundSchema = new Schema({
     price: Number,
     description: String,
     location: String,
+    images: [imageSchema],
     author: {
         type: Schema.Types.ObjectId,
         ref: "User"
@@ -27,7 +28,17 @@ const campgroundSchema = new Schema({
             ref: "Review"
         }
     ],
-    images: [imageSchema]
+    geometry: {
+        type: {
+            type: String,
+            enum: ["Point"], // like this we say that type must be string "Point"
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    }
 });
 
 campgroundSchema.post("findOneAndDelete", async function (camp) {

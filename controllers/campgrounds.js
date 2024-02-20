@@ -18,7 +18,7 @@ const renderNewForm = (req, res) => {
 
 const createCampground = async (req, res, next) => {
     const geoData = await geocoder.forwardGeocode({
-        query: "Orahov Brijeg, BiH",
+        query: req.body.campground.location,
         limit: 1
     }).send();
     console.log(geoData.body.features[0].geometry);
