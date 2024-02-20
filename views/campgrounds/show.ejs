@@ -96,6 +96,7 @@
     <!-- Needs to be before that showPageMap script -->
     <script>
         const mapToken = "<%- process.env.MAPBOX_TOKEN %>";
+        const campground = '<%- JSON.stringify(campground) %>' // we also need to send campground to showPageMap.js because of coordinates
     </script>
 
     <!-- this script needs to be placed after script and link for maps (it is in boilerplate head element) so we can use mapboxgl variable -->
