@@ -9,11 +9,12 @@ const map = new mapboxgl.Map({
     zoom: 10,
 });
 
- new mapboxgl.Marker()
-     .setLngLat(campground.geometry.coordinates)
-     .addTo(map)
+new mapboxgl.Marker()
+    .setLngLat(campground.geometry.coordinates)
+    .setPopup(
+        new mapboxgl.Popup()
+        .setHTML(`<p><b>${campground.title}<b/>,<br> ${campground.location}</p>`)
+    )
+    .addTo(map)
 
-
-
-     
-     //JSON.parse(campground.replaceAll("\\", "\\\\")).geometry.coordinates
+//JSON.parse(campground.replaceAll("\\", "\\\\")).geometry.coordinates
