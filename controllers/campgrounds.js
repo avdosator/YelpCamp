@@ -27,7 +27,6 @@ const createCampground = async (req, res, next) => {
     campground.images = req.files.map(f => ( {path: f.path, filename: f.filename} ));
     campground.author = req.user._id;
     await campground.save();
-    console.log(campground);
     req.flash("success", "Successfully created campground!");
     res.redirect(`/campgrounds/${campground.id}`);
 }
