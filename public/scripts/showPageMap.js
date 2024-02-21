@@ -5,10 +5,15 @@ const map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/mapbox/streets-v12', // style URL
     // somewhere between server and browser were problems, so we had to call replaceAll like this to correct the images.path
-    center: JSON.parse(campground.replaceAll("\\", "\\\\")).geometry.coordinates,
+    center: campground.geometry.coordinates,
     zoom: 10,
 });
 
  new mapboxgl.Marker()
-     .setLngLat(JSON.parse(campground.replaceAll("\\", "\\\\")).geometry.coordinates)
+     .setLngLat(campground.geometry.coordinates)
      .addTo(map)
+
+
+
+     
+     //JSON.parse(campground.replaceAll("\\", "\\\\")).geometry.coordinates
