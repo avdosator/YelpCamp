@@ -35,8 +35,8 @@ const seedDatabase = async () => {
             description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. In tempore recusandae amet id ipsum suscipit iusto consequuntur nam, repellat veritatis pariatur eaque quam similique ab commodi nostrum ut autem repudiandae.",
             images:  [
                 {
-                  path: 'C:\\Users\\Avdo\\Desktop\\workspace - VS Code\\YelpCamp\\public\\uploads\\image-YelpCamp/public/uploads/image-1708107075590.jpg',
-                  filename: 'image-1708107075590.jpg',
+                  path: 'C:\\Users\\Avdo\\Desktop\\workspace - VS Code\\YelpCamp\\public\\uploads\\image-1708107075590.jpg',
+                  filename: 'image-1708096912972.jpg',
                 },
                 {
                   path: 'C:\\Users\\Avdo\\Desktop\\workspace - VS Code\\YelpCamp\\public\\uploads\\image-1708096913049.jpg',
