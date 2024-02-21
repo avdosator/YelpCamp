@@ -1,6 +1,9 @@
-const Campground = require("../models/campground");
 const fs = require("fs");
 const path = require("path");
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapboxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding( {accessToken: mapboxToken} );
+const Campground = require("../models/campground");
 
 const uploadsDir = path.join(__dirname, "..", "public", 'uploads');
 
@@ -14,7 +17,12 @@ const renderNewForm = (req, res) => {
 }
 
 const createCampground = async (req, res, next) => {
+    const geoData = await geocoder.forwardGeocode({
+        query: req.body.campground.location,
+        limit: 1
+    }).send();
     const campground = new Campground(req.body.campground);
+    campground.geometry = geoData.body.features[0].geometry;
     // loop over req.files (uploaded images) and for every image create an object and store it in campground.images
     campground.images = req.files.map(f => ( {path: f.path, filename: f.filename} ));
     campground.author = req.user._id;
