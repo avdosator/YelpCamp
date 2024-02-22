@@ -44,11 +44,11 @@ map.on('load', () => {
             'circle-radius': [
                 'step',
                 ['get', 'point_count'],
+                15,
+                10,
                 20,
-                100,
                 30,
-                750,
-                40
+                25
             ]
         }
     });
