@@ -4,7 +4,7 @@ const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/light-v11',
     center: [-103.5917, 40.6699],
-    zoom: 3
+    zoom: 4
 });
 
 map.on('load', () => {
@@ -35,20 +35,20 @@ map.on('load', () => {
             'circle-color': [
                 'step',
                 ['get', 'point_count'],
-                '#51bbd6',
-                100,
-                '#f1f075',
-                750,
-                '#f28cb1'
+                '#0ad2f5',
+                10,
+                '#0caded',
+                30,
+                '#0c8fed'
             ],
             'circle-radius': [
                 'step',
                 ['get', 'point_count'],
+                15,
+                10,
                 20,
-                100,
                 30,
-                750,
-                40
+                25
             ]
         }
     });
@@ -71,8 +71,8 @@ map.on('load', () => {
         source: 'campgrounds',
         filter: ['!', ['has', 'point_count']],
         paint: {
-            'circle-color': '#11b4da',
-            'circle-radius': 4,
+            'circle-color': '#11c6da',
+            'circle-radius': 5,
             'circle-stroke-width': 1,
             'circle-stroke-color': '#fff'
         }
