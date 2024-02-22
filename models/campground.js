@@ -42,6 +42,10 @@ const campgroundSchema = new Schema({
     }
 });
 
+imageSchema.virtual("popUpMarkup").get(function () {
+    return `<b><a href="/campgrounds/${this._id}">${this.title}<a/><b/>, <br> Price: ${this.price}`;
+});
+
 campgroundSchema.post("findOneAndDelete", async function (camp) {
     if(camp) {
         const res = await Review.deleteMany({_id: { $in: camp.reviews }});
