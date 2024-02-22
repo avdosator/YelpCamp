@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Review = require("./review");
 
 const Schema = mongoose.Schema;
+const opts = { toJSON: { virtuals: true } };
 
 const imageSchema = new Schema({
     _id: {_id: false}, // I think that we don't want every image to have id
@@ -40,6 +41,10 @@ const campgroundSchema = new Schema({
             required: true
         }
     }
+}, opts);
+
+campgroundSchema.virtual("properties.popUpMarkup").get(function () {
+    return `<b><a href="/campgrounds/${this._id}">${this.title}<a/><b/> <br> <p>Price: ${this.price}$<p/>`;
 });
 
 campgroundSchema.post("findOneAndDelete", async function (camp) {
