@@ -15,6 +15,7 @@ new mapboxgl.Marker()
         new mapboxgl.Popup()
         .setHTML(`<p><b>${campground.title}<b/>,<br> ${campground.location}</p>`)
     )
-    .addTo(map)
+    .addTo(map);
+    map.addControl(new mapboxgl.NavigationControl(), "top-right");
 
 //JSON.parse(campground.replaceAll("\\", "\\\\")).geometry.coordinates
