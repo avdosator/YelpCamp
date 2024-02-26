@@ -7,8 +7,8 @@
     height: 300px;
 }
 
+/* way to make this div go beyond its containers width (full vh width) */
 #full-width {
-
     width: 99vw;
     position: relative;
     left: 50%;

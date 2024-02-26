@@ -14,6 +14,7 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const ExpressError = require("./utils/ExpressError");
+const mongoSanitize = require("express-mongo-sanitize");
 const User = require("./models/user");
 
 
@@ -35,6 +36,9 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded( { extended: true}));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public"))); // serve assets from public folder
+ // this will delete every "mongoish" (characters starting with $ or containing .) string from req.body/params/headers/query
+//app.use(mongoSanitize());
+
 
 const sessionConfig = {
     secret: "badsecret",
@@ -61,6 +65,7 @@ passport.serializeUser(User.serializeUser()); // generates a function which is u
 passport.deserializeUser(User.deserializeUser()); // function which is used to deserialize user 
 
 app.use((req, res, next) => {
+    //console.log(req.body);
     res.locals.currentUser = req.user; // if user is logged in this will be object, otherwise is undefined so we can use it in all templates (look at navbar)
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
