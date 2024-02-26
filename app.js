@@ -42,9 +42,11 @@ app.use(express.static(path.join(__dirname, "public"))); // serve assets from pu
 
 const sessionConfig = {
     secret: "badsecret",
+    name: "cockie", // change default name so session is less noticable to hackers
     resave: false,
     saveUninitialized: true,
     cookie: {
+        //secure: true, visible only with secure requests (https)
         httpOnly: true,
         expires: Date.now() + (1000 * 60 * 60 * 24 * 7), // 7 days after now
         maxAge: 1000 * 60 * 60 * 24 * 7
