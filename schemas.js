@@ -1,5 +1,28 @@
 const Joi = require("joi");
 
+const extension = (joi) => ({
+    type: "string",
+    base: joi.string(),
+    messages: {
+        "string.escapeHTML": "{{#label}} must not include HTML!"
+    },
+    rules: {
+        escapeHTML: {
+            validate(value, helpers) {
+                const clean = sanitizeHTML(value, {
+                    allowedTags: [], // you can add tags and attributes which are allowed
+                    allowedAttributes: {}
+                });
+                // if value is changed that means that string contained some html element and then we return error message for
+                // string.escapeHTML key above, and we provide value to be inserted in that message
+                if (clean !== value) return helpers.error("string.escapeHTML", { value });
+                return clean;
+            }
+        }
+    }
+
+});
+
 module.exports.campgroundSchema = Joi.object({
     campground: Joi.object({
         title: Joi.string().required(),
