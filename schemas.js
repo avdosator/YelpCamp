@@ -1,4 +1,4 @@
-const Joi = require("joi");
+const BaseJoi = require("joi");
 const sanitizeHTML = require("sanitize-html");
 
 const extension = (joi) => ({
@@ -24,12 +24,14 @@ const extension = (joi) => ({
 
 });
 
+const Joi = BaseJoi.extend(extension); // we do it like this so we don't need to change every occurency of word Joi
+
 module.exports.campgroundSchema = Joi.object({
     campground: Joi.object({
-        title: Joi.string().required(),
+        title: Joi.string().required().escapeHTML(),
         price: Joi.number().required().min(0),
-        description: Joi.string().required(),
-        location: Joi.string().required(),
+        description: Joi.string().required().escapeHTML(),
+        location: Joi.string().required().escapeHTML(),
         //image: Joi.string().required()
     }).required(),
     deleteImages: Joi.array() // array that will be formed with names of checked images to delete (in edit form)
@@ -38,6 +40,6 @@ module.exports.campgroundSchema = Joi.object({
 module.exports.reviewSchema = Joi.object({
     review: Joi.object({
         rating: Joi.number().required().min(1).max(5),
-        body: Joi.string().required()
+        body: Joi.string().required().escapeHTML()
     }).required()
 });
