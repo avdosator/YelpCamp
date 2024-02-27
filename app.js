@@ -68,12 +68,20 @@ const scriptSrc = [
 
 ]
 
-const imgSrc = [
-    
-]
+const connectSrc = [
+    "https://api.mapbox.com/",
+    "https://a.tiles.mapbox.com/",
+    "https://b.tiles.mapbox.com/",
+    "https://events.mapbox.com/",
+];
 
-const fontSrc = [
-    
+const styleSrc = [
+    "https://kit-free.fontawesome.com/",
+    "https://stackpath.bootstrapcdn.com/",
+    "https://api.mapbox.com/",
+    "https://api.tiles.mapbox.com/",
+    "https://fonts.googleapis.com/",
+    "https://use.fontawesome.com/",
 ]
 
 // PASSWORD SET UP
