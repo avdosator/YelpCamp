@@ -13,8 +13,9 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-const ExpressError = require("./utils/ExpressError");
 const mongoSanitize = require("express-mongo-sanitize");
+const helmet = require("helmet");
+const ExpressError = require("./utils/ExpressError");
 const User = require("./models/user");
 
 
@@ -55,6 +56,52 @@ const sessionConfig = {
 
 app.use(session(sessionConfig));
 app.use(flash());
+app.use(helmet());
+
+const scriptSrc = [
+    "https://api.tiles.mapbox.com/",
+    "https://api.mapbox.com/",
+    //"https://kit.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/",
+    "https://cdn.jsdelivr.net",
+
+];
+
+const connectSrc = [
+    "https://api.mapbox.com/",
+    "https://a.tiles.mapbox.com/",
+    "https://b.tiles.mapbox.com/",
+    "https://events.mapbox.com/",
+];
+
+const styleSrc = [
+    //"https://kit-free.fontawesome.com/",
+    "https://api.mapbox.com/",
+    "https://api.tiles.mapbox.com/",
+    "https://fonts.googleapis.com/",
+    "https://use.fontawesome.com/",
+    "https://cdn.jsdelivr.net"
+];
+
+const fontSrc = [];
+
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: [],
+        connectSrc: ["'self'", ...connectSrc],
+        scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrc],
+        styleSrc: ["'self'", "'unsafe-inline'", ...styleSrc],
+        workerSrc: ["'self'", "blob:"],
+        objectSrc: [],
+        imgSrc: [
+            "'self'",
+            "blob:",
+            "data:",
+            "https://images.unsplash.com/"
+        ],
+        fontSrc: ["'self'", ...fontSrc],
+    }
+}))
 
 // PASSWORD SET UP
 app.use(passport.initialize()); // adds passport object to the req and allows next routes and middlewares to use passport
