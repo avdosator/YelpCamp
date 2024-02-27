@@ -62,7 +62,7 @@ const scriptSrc = [
     "https://stackpath.bootstrapcdn.com/",
     "https://api.tiles.mapbox.com/",
     "https://api.mapbox.com/",
-    //"https://kit.fontawesome.com/",
+    "https://kit.fontawesome.com/",
     "https://cdnjs.cloudflare.com/",
     "https://cdn.jsdelivr.net",
 
@@ -76,12 +76,12 @@ const connectSrc = [
 ];
 
 const styleSrc = [
-    //"https://kit-free.fontawesome.com/",
-    "https://stackpath.bootstrapcdn.com/",
+    "https://kit-free.fontawesome.com/",
     "https://api.mapbox.com/",
     "https://api.tiles.mapbox.com/",
     "https://fonts.googleapis.com/",
-    //"https://use.fontawesome.com/",
+    "https://use.fontawesome.com/",
+    "https://cdn.jsdelivr.net"
 ];
 
 const fontSrc = [];
