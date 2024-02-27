@@ -13,6 +13,8 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
+const mongoSanitize = require("express-mongo-sanitize");
+const helmet = require("helmet");
 const ExpressError = require("./utils/ExpressError");
 const User = require("./models/user");
 
@@ -35,12 +37,17 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded( { extended: true}));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public"))); // serve assets from public folder
+ // this will delete every "mongoish" (characters starting with $ or containing .) string from req.body/params/headers/query
+//app.use(mongoSanitize());
+
 
 const sessionConfig = {
     secret: "badsecret",
+    name: "cockie", // change default name so session is less noticable to hackers
     resave: false,
     saveUninitialized: true,
     cookie: {
+        //secure: true, visible only with secure requests (https)
         httpOnly: true,
         expires: Date.now() + (1000 * 60 * 60 * 24 * 7), // 7 days after now
         maxAge: 1000 * 60 * 60 * 24 * 7
@@ -49,6 +56,52 @@ const sessionConfig = {
 
 app.use(session(sessionConfig));
 app.use(flash());
+app.use(helmet());
+
+const scriptSrc = [
+    "https://api.tiles.mapbox.com/",
+    "https://api.mapbox.com/",
+    //"https://kit.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/",
+    "https://cdn.jsdelivr.net",
+
+];
+
+const connectSrc = [
+    "https://api.mapbox.com/",
+    "https://a.tiles.mapbox.com/",
+    "https://b.tiles.mapbox.com/",
+    "https://events.mapbox.com/",
+];
+
+const styleSrc = [
+    //"https://kit-free.fontawesome.com/",
+    "https://api.mapbox.com/",
+    "https://api.tiles.mapbox.com/",
+    "https://fonts.googleapis.com/",
+    "https://use.fontawesome.com/",
+    "https://cdn.jsdelivr.net"
+];
+
+const fontSrc = [];
+
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: [],
+        connectSrc: ["'self'", ...connectSrc],
+        scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrc],
+        styleSrc: ["'self'", "'unsafe-inline'", ...styleSrc],
+        workerSrc: ["'self'", "blob:"],
+        objectSrc: [],
+        imgSrc: [
+            "'self'",
+            "blob:",
+            "data:",
+            "https://images.unsplash.com/"
+        ],
+        fontSrc: ["'self'", ...fontSrc],
+    }
+}))
 
 // PASSWORD SET UP
 app.use(passport.initialize()); // adds passport object to the req and allows next routes and middlewares to use passport
@@ -61,6 +114,7 @@ passport.serializeUser(User.serializeUser()); // generates a function which is u
 passport.deserializeUser(User.deserializeUser()); // function which is used to deserialize user 
 
 app.use((req, res, next) => {
+    //console.log(req.body);
     res.locals.currentUser = req.user; // if user is logged in this will be object, otherwise is undefined so we can use it in all templates (look at navbar)
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
