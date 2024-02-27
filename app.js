@@ -62,11 +62,11 @@ const scriptSrc = [
     "https://stackpath.bootstrapcdn.com/",
     "https://api.tiles.mapbox.com/",
     "https://api.mapbox.com/",
-    "https://kit.fontawesome.com/",
+    //"https://kit.fontawesome.com/",
     "https://cdnjs.cloudflare.com/",
     "https://cdn.jsdelivr.net",
 
-]
+];
 
 const connectSrc = [
     "https://api.mapbox.com/",
@@ -76,13 +76,33 @@ const connectSrc = [
 ];
 
 const styleSrc = [
-    "https://kit-free.fontawesome.com/",
+    //"https://kit-free.fontawesome.com/",
     "https://stackpath.bootstrapcdn.com/",
     "https://api.mapbox.com/",
     "https://api.tiles.mapbox.com/",
     "https://fonts.googleapis.com/",
-    "https://use.fontawesome.com/",
-]
+    //"https://use.fontawesome.com/",
+];
+
+const fontSrc = [];
+
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: [],
+        connectSrc: ["'self'", ...connectSrc],
+        scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrc],
+        styleSrc: ["'self'", "'unsafe-inline'", ...styleSrc],
+        workerSrc: ["'self'", "blob:"],
+        objectSrc: [],
+        imgSrc: [
+            "'self'",
+            "blob:",
+            "data:",
+            "https://images.unsplash.com/"
+        ],
+        fontSrc: ["'self'", ...fontSrc],
+    }
+}))
 
 // PASSWORD SET UP
 app.use(passport.initialize()); // adds passport object to the req and allows next routes and middlewares to use passport
