@@ -17,6 +17,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
 const ExpressError = require("./utils/ExpressError");
 const User = require("./models/user");
+const MongoStore = require("connect-mongo");
 
 
 const campgroundRoutes = require("./routes/campgrounds");
@@ -42,6 +43,7 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public"))); // serve assets from public folder
  // this will delete every "mongoish" (characters starting with $ or containing .) string from req.body/params/headers/query
 //app.use(mongoSanitize());
+
 
 
 const sessionConfig = {
