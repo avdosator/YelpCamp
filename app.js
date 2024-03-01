@@ -17,13 +17,16 @@ const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
 const ExpressError = require("./utils/ExpressError");
 const User = require("./models/user");
+const MongoStore = require("connect-mongo");
 
 
 const campgroundRoutes = require("./routes/campgrounds");
 const reviewRoutes = require("./routes/reviews");
 const userRoutes = require("./routes/users");
 
-mongoose.connect("mongodb://127.0.0.1:27017/yelp-camp");
+const mongoDBUrl =  process.env.MONGO_DB_URL; //"mongodb://127.0.0.1:27017/yelp-camp"
+
+mongoose.connect(mongoDBUrl);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Connection error!"));
 db.once("open", () => console.log("Connected to database!"));
@@ -38,11 +41,19 @@ app.use(express.urlencoded( { extended: true}));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public"))); // serve assets from public folder
  // this will delete every "mongoish" (characters starting with $ or containing .) string from req.body/params/headers/query
-//app.use(mongoSanitize());
+app.use(mongoSanitize());
 
+const store = MongoStore.create({
+    mongoUrl: mongoDBUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: process.env.SESSION_SECRET,
+    }
+});
 
 const sessionConfig = {
-    secret: "badsecret",
+    store, // store sessions in mongo instead of memory storage before
+    secret: process.env.SESSION_SECRET,
     name: "cockie", // change default name so session is less noticable to hackers
     resave: false,
     saveUninitialized: true,
@@ -97,7 +108,8 @@ app.use(helmet.contentSecurityPolicy({
             "'self'",
             "blob:",
             "data:",
-            "https://images.unsplash.com/"
+            "https://images.unsplash.com/",
+            "https://i.imgur.com/"
         ],
         fontSrc: ["'self'", ...fontSrc],
     }

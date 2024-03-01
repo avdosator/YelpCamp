@@ -2,16 +2,13 @@ const mongoose = require("mongoose");
 const Review = require("./review");
 
 const Schema = mongoose.Schema;
-const opts = { toJSON: { virtuals: true } };
+const opts = { toJSON: { virtuals: true } }; // now browser can see virtual methods and can use them
 
 const imageSchema = new Schema({
     _id: {_id: false}, // I think that we don't want every image to have id
     path: String,
-    filename: String
-});
-
-imageSchema.virtual("src").get(function () {
-    return this.path.substring(57);
+    filename: String,
+    deleteHash: String
 });
 
 const campgroundSchema = new Schema({
