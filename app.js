@@ -24,7 +24,7 @@ const campgroundRoutes = require("./routes/campgrounds");
 const reviewRoutes = require("./routes/reviews");
 const userRoutes = require("./routes/users");
 
-const mongoDBUrl = "mongodb://127.0.0.1:27017/yelp-camp" //process.env.MONGO_DB_URL;
+const mongoDBUrl =  process.env.MONGO_DB_URL; //"mongodb://127.0.0.1:27017/yelp-camp"
 
 mongoose.connect(mongoDBUrl);
 const db = mongoose.connection;
@@ -108,7 +108,8 @@ app.use(helmet.contentSecurityPolicy({
             "'self'",
             "blob:",
             "data:",
-            "https://images.unsplash.com/"
+            "https://images.unsplash.com/",
+            "https://i.imgur.com/"
         ],
         fontSrc: ["'self'", ...fontSrc],
     }
